@@ -1,0 +1,59 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../remote-list/remote-list.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../../bower_components/iron-icons/av-icons.html">
+
+<dom-module id="remote-app">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      h2 {
+        color: #fff;
+        background-color: #03a9f4;
+        margin: 0px;
+      }
+    </style>
+
+    <iron-ajax id="playAjax" url="/control?cmd=play" debounce-duration="300"></iron-ajax>
+
+    <iron-ajax id="stopAjax" url="/control?cmd=stop" debounce-duration="300"></iron-ajax>
+
+    <iron-ajax id="prevAjax" url="/control?cmd=prev" debounce-duration="300"></iron-ajax>
+
+    <iron-ajax id="nextAjax" url="/control?cmd=next" debounce-duration="300"></iron-ajax>
+
+    <h2>
+      <paper-button on-tap="_play">
+        <iron-icon icon="av:play-arrow"></iron-icon>
+        <iron-icon icon="av:pause"></iron-icon>
+      </paper-button>
+      <paper-icon-button icon="av:stop" on-tap="_stop"></paper-icon-button>
+      <paper-icon-button icon="av:skip-previous" on-tap="_prev"></paper-icon-button>
+      <paper-icon-button icon="av:skip-next" on-tap="_next"></paper-icon-button>
+    </h2>
+   
+    <remote-list></remote-list>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'remote-app',
+
+      _play: function() {
+        this.$.playAjax.generateRequest();
+      },
+      _stop: function() {
+        this.$.stopAjax.generateRequest();
+      },
+      _prev: function() {
+        this.$.prevAjax.generateRequest();
+      },
+      _next: function() {
+        this.$.nextAjax.generateRequest();
+      }
+
+    });
+  </script>
+</dom-module>

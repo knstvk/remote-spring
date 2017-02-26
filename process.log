@@ -1,0 +1,14 @@
+WARNING strpool.cc:233 [leak_cb]: String leaked: http://lyrics.wikia.com/index.php?action=edit&title=index.php?title=BILL_EVANS:Easy+Way+Out&amp;action=edit
+WARNING runtime.cc:357 [aud_leak_check]: Bytes allocated at exit: 54930
+WARNING strpool.cc:233 [leak_cb]: String leaked: http://lyrics.wikia.com/index.php?action=edit&title=index.php?title=BILL_EVANS:Walk+into+the+LIght&amp;action=edit
+WARNING runtime.cc:357 [aud_leak_check]: Bytes allocated at exit: 55277
+WARNING ffaudio-core.cc:129 [mov,mp4,m4a,3gp,3g2,mj2]: <0414eac0> stream 0, timescale not set
+WARNING ffaudio-core.cc:129 [mov,mp4,m4a,3gp,3g2,mj2]: <0414f020> stream 0, timescale not set
+WARNING ffaudio-core.cc:129 [mov,mp4,m4a,3gp,3g2,mj2]: <0819e560> stream 0, timescale not set
+WARNING ffaudio-core.cc:129 [mov,mp4,m4a,3gp,3g2,mj2]: <081cea00> stream 0, timescale not set
+WARNING ffaudio-core.cc:129 [mov,mp4,m4a,3gp,3g2,mj2]: <04177420> stream 0, timescale not set
+WARNING ffaudio-core.cc:129 [mov,mp4,m4a,3gp,3g2,mj2]: <04176380> stream 0, timescale not set
+WARNING ffaudio-core.cc:129 [mov,mp4,m4a,3gp,3g2,mj2]: <06c1a880> stream 0, timescale not set
+WARNING ffaudio-core.cc:129 [mov,mp4,m4a,3gp,3g2,mj2]: <04176ea0> stream 0, timescale not set
+WARNING ffaudio-core.cc:129 [mov,mp4,m4a,3gp,3g2,mj2]: <06ef7040> stream 0, timescale not set
+WARNING ffaudio-core.cc:129 [mov,mp4,m4a,3gp,3g2,mj2]: <06c19d80> stream 0, timescale not set

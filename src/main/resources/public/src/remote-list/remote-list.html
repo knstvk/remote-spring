@@ -1,0 +1,181 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/av-icons.html">
+<link rel="import" href="../../bower_components/app-route/app-location.html">
+<link rel="import" href="../../bower_components/app-route/app-route.html">
+
+<dom-module id="remote-list">
+	<template>
+		<style>
+			:host {
+				display: block;
+			}
+      .breadcrumbs {
+        background-color: #eee;
+      }
+      .item-table {
+        display: table;
+        margin: 0 0.29em;
+      }
+      .item-row {
+        display: table-row;
+      }
+      .item-name, .item-size, .item-open, .item-play {
+        display: table-cell;
+        padding: 0px 10px;
+      }
+		</style>
+
+    <app-location route="{{route}}" use-hash-as-path></app-location>
+    <app-route route="{{route}}" pattern="/:view" data="{{routeData}}"></app-route>
+    
+    <iron-ajax
+        auto
+        url="{{currentUrl}}"
+        handle-as="json"
+        last-response="{{tracks}}"
+        debounce-duration="300">
+    </iron-ajax>
+
+    <iron-ajax id="addAjax"
+        url="{{addUrl}}"
+        debounce-duration="300">
+    </iron-ajax>
+
+    <div class="breadcrumbs">
+      <paper-button on-tap="_tapRoot">/</paper-button>
+
+      <template is="dom-repeat" items="[[breadCrumbs]]">
+        <template is="dom-if" if="[[!item.last]]">
+          <paper-button on-tap="_tapBreadCrumb">[[item.title]]</paper-button>
+        </template>
+        <template is="dom-if" if="[[item.last]]">
+          [[item.title]]
+          <paper-icon-button icon="av:playlist-play" on-tap="_add"></paper-icon-button>
+        </template>
+      </template>
+    </div>
+
+    <div class="item-table">
+      <template is="dom-repeat" items="[[tracks]]">
+        <div class="item-row">
+          <template is="dom-if" if="[[_isDirectory(item)]]">
+            <div class="item-name">[[_getTrackTitle(item)]]</div>
+            <paper-icon-button class="item-play" icon="av:playlist-play" on-tap="_add"></paper-icon-button>
+            <paper-icon-button class="item-open" icon="icons:arrow-forward" on-tap="_tapDirectory"></paper-icon-button>
+          </template>
+          <template is="dom-if" if="[[!_isDirectory(item)]]">
+            <div class="item-name">[[_getTrackTitle(item)]]</div> 
+            <div class="item-size">[[item.size]]</div>       
+            <paper-icon-button class="item-play" icon="av:play-circle-outline" on-tap="_add"></paper-icon-button>
+          </template>
+        </div>
+      </template>
+    </div>		
+	</template>  
+
+	<script>
+    const baseUrl = "/";
+    // const baseUrl = "http://localhost:8080/";
+
+		Polymer({
+			is: 'remote-list',            
+
+      properties: {
+        route: Object,
+        routeData: Object,
+
+        currentPath: {
+          type: String,
+          value: '',
+          observer: '_currentPathChanged'
+        },
+
+        breadCrumbs: {
+          type: Array
+        },
+
+        currentUrl: {
+            type: String,
+            value: baseUrl + 'list'
+        },
+
+        addUrl: String
+      },
+      
+      observers: [
+        '_routeChanged(route.path)'
+      ],
+
+      _routeChanged: function(changeRecord) {
+          var path = this.route.path;
+          if (path.startsWith('/'))
+            path = path.substr(1);
+          if (path != this.currentPath) {
+            this.currentPath = path;
+            this._setCurrentUrl(path);
+            console.log('_routeChanged currentUrl: ' + this.currentUrl);
+          }
+      },
+
+      _setCurrentUrl: function(path) {
+        this.currentUrl = baseUrl + "list?dir=" + encodeURIComponent(path);
+        if (path == '')
+          document.title = 'Remote';
+        else
+          document.title = path.split('/').slice(-1) + " - Remote";
+      },
+
+      _currentPathChanged: function(newValue, oldValue) {
+        var bc = [];
+        if (newValue) {
+          var parts = newValue.split('/');
+          for (var i = 0; i < parts.length; i++) {
+            var item = {};
+            item.title = parts[i];
+            item.path = parts.slice(0, i + 1).join('/');
+            item.last = i == parts.length - 1;
+            bc.push(item);
+          }
+        } 
+        this.breadCrumbs = bc;
+      },
+
+      _getTrackTitle: function(item) {
+        var parts = item.path.split('/');
+        return parts.slice(-1);
+      },
+
+      _isDirectory: function (item) {
+          return item.size == -1;
+      },
+
+      _tapRoot: function() {
+        this._goto('');
+      },
+
+      _tapDirectory: function(event) {
+          this._goto(event.model.item.path);
+      },
+
+      _tapBreadCrumb: function(event) {
+        this._goto(event.model.item.path);
+      },
+
+      _goto: function(path) {
+          this.currentPath = path;
+          this.set('route.path', '/' + this.currentPath);
+          this._setCurrentUrl(path);
+      },
+
+      _add: function(event) {
+        this.addUrl = baseUrl + 'add?path=' + encodeURIComponent(event.model.item.path);
+        this.$.addAjax.generateRequest();
+      }
+		});
+	</script>
+</dom-module>

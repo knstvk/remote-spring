@@ -9,10 +9,13 @@
       :host {
         display: block;
       }
-      h2 {
+      .header {
         color: #fff;
         background-color: #03a9f4;
         margin: 0px;
+      }
+      .header-icon {
+        display: inline-flex;
       }
     </style>
 
@@ -24,15 +27,15 @@
 
     <iron-ajax id="nextAjax" url="/control?cmd=next" debounce-duration="300"></iron-ajax>
 
-    <h2>
+    <div class="header">
       <paper-button on-tap="_play">
         <iron-icon icon="av:play-arrow"></iron-icon>
         <iron-icon icon="av:pause"></iron-icon>
       </paper-button>
-      <paper-icon-button icon="av:stop" on-tap="_stop"></paper-icon-button>
-      <paper-icon-button icon="av:skip-previous" on-tap="_prev"></paper-icon-button>
-      <paper-icon-button icon="av:skip-next" on-tap="_next"></paper-icon-button>
-    </h2>
+      <paper-icon-button class="header-icon" icon="av:stop" on-tap="_stop"></paper-icon-button>
+      <paper-icon-button class="header-icon" icon="av:skip-previous" on-tap="_prev"></paper-icon-button>
+      <paper-icon-button class="header-icon" icon="av:skip-next" on-tap="_next"></paper-icon-button>
+    </div>
    
     <remote-list></remote-list>
   </template>

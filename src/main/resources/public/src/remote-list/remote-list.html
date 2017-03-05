@@ -16,6 +16,7 @@
 			}
       .breadcrumbs {
         background-color: #eee;
+        padding: 0px 5px;
       }
       .item-table {
         display: table;
@@ -27,6 +28,7 @@
       .item-name, .item-size, .item-open, .item-play {
         display: table-cell;
         padding: 0px 10px;
+        vertical-align: middle;
       }
 		</style>
 
@@ -47,7 +49,7 @@
     </iron-ajax>
 
     <div class="breadcrumbs">
-      <paper-button on-tap="_tapRoot">/</paper-button>
+      <paper-icon-button icon="av:library-music" on-tap="_tapRoot"></paper-icon-button>
 
       <template is="dom-repeat" items="[[breadCrumbs]]">
         <template is="dom-if" if="[[!item.last]]">
